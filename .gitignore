@@ -3,3 +3,4 @@
 *.log
 /app/build
 .DS_Store
+.dockerignore

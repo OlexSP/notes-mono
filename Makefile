@@ -1,3 +1,12 @@
+APP_BIN=app/build/app
+
+.PHONY: build
+
+build: clean $(APP_BIN)
+
+$(APP_BIN):
+	go build -o $(APP_BIN) ./app/cmd/app/main.go
+
 .PHONY: lint
 lint:
 	golangci-lint run
@@ -13,3 +22,21 @@ up-local-env: down-local-env
 .PHONY: down-local-env
 down-local-env:
 	@docker-compose -f docker-compose.local.yml stop
+
+.PHONY: swagger
+swagger:
+	swagger generate spec -o docs/swagger.json
+
+
+
+.PHONY: migrate
+migrate:
+	$(APP_BIN) migrate -version $(version)
+
+.PHONY: migrate.up
+migrate.up:
+	$(APP_BIN) migrate -seq up
+
+.PHONY: migrate.down
+migrate.down:
+	$(APP_BIN) migrate -seq down
