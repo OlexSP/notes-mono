@@ -1,2 +1,2 @@
 # notes-mono
-mono backend application for making notes
+monolith backend application for the notes system
