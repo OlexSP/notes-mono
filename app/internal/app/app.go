@@ -13,7 +13,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"time"
 )
 
 type App struct {
@@ -47,33 +46,30 @@ func (a *App) startHTTP() error {
 
 	a.logger.Info("HTTP Server initializing")
 
-	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%s", a.cfg.Listen.BindIP, a.cfg.Listen.Port))
+	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", a.cfg.HTTP.IP, a.cfg.HTTP.Port))
 	if err != nil {
-		a.logger.Info("failed to listen")
+		a.logger.Error("failed to listen", logging.Err(err))
 		os.Exit(1)
 	}
 
 	a.logger.Info("CORS initializing")
 
 	c := cors.New(cors.Options{
-		AllowedMethods: []string{
-			http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions, http.MethodPatch,
-		},
-		AllowedOrigins:     []string{"http://localhost:10000", "https://localhost:8080"},
-		AllowCredentials:   true,
-		AllowedHeaders:     []string{"Authorization", "Content-Type", "X-CSRF-Token", "Location", "Charset", "Access-Control-Allow-Origin", "Origin", "Accept", "Content-Length", "Accept-Encoding"},
-		OptionsPassthrough: true,
-		ExposedHeaders:     []string{"Location", "Content-Disposition", "Authorization"},
-		// enable debug mode for testing in prod
-		Debug: false,
+		AllowedMethods:     a.cfg.HTTP.CORS.AllowedMethods,
+		AllowedOrigins:     a.cfg.HTTP.CORS.AllowedOrigins,
+		AllowCredentials:   a.cfg.HTTP.CORS.AllowCredentials,
+		AllowedHeaders:     a.cfg.HTTP.CORS.AllowedHeaders,
+		OptionsPassthrough: a.cfg.HTTP.CORS.OptionsPassthrough,
+		ExposedHeaders:     a.cfg.HTTP.CORS.ExposedHeaders,
+		Debug:              a.cfg.HTTP.CORS.Debug,
 	})
 
 	handler := c.Handler(a.router)
 
 	a.httpServer = &http.Server{
 		Handler:      handler,
-		WriteTimeout: 20 * time.Second,
-		ReadTimeout:  20 * time.Second,
+		WriteTimeout: a.cfg.HTTP.WriteTimeout,
+		ReadTimeout:  a.cfg.HTTP.ReadTimeout,
 	}
 
 	if err = a.httpServer.Serve(listener); err != nil {

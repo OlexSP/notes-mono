@@ -5,24 +5,37 @@ import (
 	"log/slog"
 	"os"
 	"sync"
+	"time"
 )
 
+// SQLDateFormat - date format for sql struct fields
+const SQLDateFormat = time.RFC3339
+
+// Config - config
 type Config struct {
-	LogLevel      string `env:"LOG_LEVEL" envDefault:"local"`
-	IsDebug       bool   `env:"IS_DEBUG" envDefault:"false"`
-	IsDevelopment bool   `env:"IS_DEV" envDefault:"false"`
-	Listen        struct {
-		Type   string `env:"LISTEN_TYPE" envDefault:"port"`
-		BindIP string `env:"BIND_IP" envDefault:"0.0.0.0"`
-		Port   string `env:"PORT" envDefault:"10000"`
-	}
+	LogLevel string `env:"LOG_LEVEL" envDefault:"local"`
+	HTTP     struct {
+		IP           string        `yaml:"ip" env:"HTTP-IP"`
+		Port         int           `yaml:"port" env:"HTTP-PORT"`
+		ReadTimeout  time.Duration `yaml:"read-timeout" env:"HTTP-READ-TIMEOUT"`
+		WriteTimeout time.Duration `yaml:"write-timeout" env:"HTTP-WRITE-TIMEOUT"`
+		CORS         struct {
+			AllowedMethods     []string `yaml:"allowed_methods" env:"HTTP-CORS-ALLOWED-METHODS"`
+			AllowedOrigins     []string `yaml:"allowed_origins"`
+			AllowCredentials   bool     `yaml:"allow_credentials"`
+			AllowedHeaders     []string `yaml:"allowed_headers"`
+			OptionsPassthrough bool     `yaml:"options_passthrough"`
+			ExposedHeaders     []string `yaml:"exposed_headers"`
+			Debug              bool     `yaml:"debug"`
+		} `yaml:"cors"`
+	} `yaml:"http"`
 	AppConfig struct {
-		LogLevel  string //`env:"LOG_LEVEL" envDefault:"info"`
+		LogLevel  string `yaml:"log-level" env:"LOG_LEVEL" env-default:"trace"`
 		AdminUser struct {
-			Email    string `env:"ADMIN_USER_EMAIL" env-required:"true"`
-			Password string `env:"ADMIN_PWD" env-required:"true"`
-		}
-	}
+			Email    string `yaml:"email" env:"ADMIN_EMAIL" env-default:"admin"`
+			Password string `yaml:"password" env:"ADMIN_PWD" env-default:"admin"`
+		} `yaml:"admin"`
+	} `yaml:"app"`
 }
 
 var instance *Config
