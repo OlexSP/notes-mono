@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/OlexSP/notes-mono/internal/config"
 	"github.com/OlexSP/notes-mono/pkg/logging"
+	"github.com/OlexSP/notes-mono/pkg/metric"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/cors"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -30,6 +31,10 @@ func NewApp(config *config.Config, logger *slog.Logger) (App, error) {
 	logger.Info("swagger docs initializing")
 	router.Handler(http.MethodGet, "/swagger", http.RedirectHandler("/swagger/index.html", http.StatusMovedPermanently))
 	router.Handler(http.MethodGet, "/swagger/*any", httpSwagger.WrapHandler)
+
+	logger.Info("heartbeat metrics initialization")
+	metricsHandler := metric.Handler{}
+	metricsHandler.Register(router)
 
 	return App{
 		cfg:    config,
