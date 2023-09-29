@@ -13,10 +13,9 @@ const SQLDateFormat = time.RFC3339
 
 // Config - config
 type Config struct {
-	LogLevel string `env:"LOG_LEVEL" envDefault:"local"`
-	HTTP     struct {
-		IP           string        `yaml:"ip" env:"HTTP-IP"`
-		Port         int           `yaml:"port" env:"HTTP-PORT"`
+	HTTP struct {
+		IP           string        `yaml:"ip" env:"HTTP-IP" env-default:"0.0.0.0"`
+		Port         int           `yaml:"port" env:"HTTP-PORT" env-default:"10000"`
 		ReadTimeout  time.Duration `yaml:"read-timeout" env:"HTTP-READ-TIMEOUT"`
 		WriteTimeout time.Duration `yaml:"write-timeout" env:"HTTP-WRITE-TIMEOUT"`
 		CORS         struct {
@@ -30,7 +29,7 @@ type Config struct {
 		} `yaml:"cors"`
 	} `yaml:"http"`
 	AppConfig struct {
-		LogLevel  string `yaml:"log-level" env:"LOG_LEVEL" env-default:"trace"`
+		LogLevel  string `yaml:"log-level" env:"LOG_LEVEL" env-default:"local"`
 		AdminUser struct {
 			Email    string `yaml:"email" env:"ADMIN_EMAIL" env-default:"admin"`
 			Password string `yaml:"password" env:"ADMIN_PWD" env-default:"admin"`

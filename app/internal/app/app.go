@@ -44,7 +44,10 @@ func (a *App) Run() error {
 
 func (a *App) startHTTP() error {
 
-	a.logger.Info("HTTP Server initializing")
+	a.logger.With(
+		"IP", a.cfg.HTTP.IP,
+		"Port", a.cfg.HTTP.Port,
+	).Info("HTTP Server initializing")
 
 	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", a.cfg.HTTP.IP, a.cfg.HTTP.Port))
 	if err != nil {
@@ -52,7 +55,17 @@ func (a *App) startHTTP() error {
 		os.Exit(1)
 	}
 
-	a.logger.Info("CORS initializing")
+	a.logger.With(
+		"IP", a.cfg.HTTP.IP,
+		"Port", a.cfg.HTTP.Port,
+		"AllowedMethods", a.cfg.HTTP.CORS.AllowedMethods,
+		"AllowedOrigins", a.cfg.HTTP.CORS.AllowedOrigins,
+		"AllowCredentials", a.cfg.HTTP.CORS.AllowCredentials,
+		"AllowedHeaders", a.cfg.HTTP.CORS.AllowedHeaders,
+		"OptionsPassthrough", a.cfg.HTTP.CORS.OptionsPassthrough,
+		"ExposedHeaders", a.cfg.HTTP.CORS.ExposedHeaders,
+		"Debug", a.cfg.HTTP.CORS.Debug,
+	).Info("CORS initializing")
 
 	c := cors.New(cors.Options{
 		AllowedMethods:     a.cfg.HTTP.CORS.AllowedMethods,
