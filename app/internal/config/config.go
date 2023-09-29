@@ -8,8 +8,9 @@ import (
 )
 
 type Config struct {
-	IsDebug       bool `env:"IS_DEBUG" envDefault:"false"`
-	IsDevelopment bool `env:"IS_DEV" envDefault:"false"`
+	LogLevel      string `env:"LOG_LEVEL" envDefault:"local"`
+	IsDebug       bool   `env:"IS_DEBUG" envDefault:"false"`
+	IsDevelopment bool   `env:"IS_DEV" envDefault:"false"`
 	Listen        struct {
 		Type   string `env:"LISTEN_TYPE" envDefault:"port"`
 		BindIP string `env:"BIND_IP" envDefault:"0.0.0.0"`

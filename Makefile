@@ -5,7 +5,7 @@ APP_BIN=app/build/app
 build: clean $(APP_BIN)
 
 $(APP_BIN):
-	go build -o $(APP_BIN) ./app/cmd/app/main.go
+	go build -o $(APP_BIN) ./app/cmd/main.go
 
 .PHONY: lint
 lint:
@@ -25,7 +25,8 @@ down-local-env:
 
 .PHONY: swagger
 swagger:
-	swagger generate spec -o docs/swagger.json
+	#swagger generate spec -o docs/swagger.json
+	swag init -g ./app/cmd/main.go -o ./app/docs
 
 
 
