@@ -19,4 +19,10 @@ func main() {
 		logger.Error("cannot create app", logging.Err(err))
 		os.Exit(1)
 	}
+
+	err = app.Run()
+	if err != nil {
+		logger.Error("cannot run app", logging.Err(err))
+		os.Exit(1)
+	}
 }
