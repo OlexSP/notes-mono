@@ -3,15 +3,15 @@ version: '3.8'
 services:
   postgres:
     image: postgres
-    container_name: notes-postgres
+    container_name: prod-postgres
     environment:
-      POSTGRES_DB: notes
-      POSTGRES_USER: Alex
+      POSTGRES_DB: prod_service
+      POSTGRES_USER: alex
       POSTGRES_PASSWORD: onepass
     ports:
       - "5432:5432"
-#    volumes:
-#      - postgres-data:/var/lib/postgresql/data
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
-#volumes:
-#  postgres-data:
+volumes:
+  postgres-data:

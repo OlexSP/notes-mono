@@ -4,12 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	_ "github.com/OlexSP/notes-mono/docs"
 	"github.com/OlexSP/notes-mono/internal/config"
 	"github.com/OlexSP/notes-mono/pkg/logging"
 	"github.com/OlexSP/notes-mono/pkg/metric"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/cors"
-	httpSwagger "github.com/swaggo/http-swagger"
+	httpSwagger "github.com/swaggo/http-swagger/v2"
 	"log/slog"
 	"net"
 	"net/http"
@@ -61,8 +62,6 @@ func (a *App) startHTTP() error {
 	}
 
 	a.logger.With(
-		"IP", a.cfg.HTTP.IP,
-		"Port", a.cfg.HTTP.Port,
 		"AllowedMethods", a.cfg.HTTP.CORS.AllowedMethods,
 		"AllowedOrigins", a.cfg.HTTP.CORS.AllowedOrigins,
 		"AllowCredentials", a.cfg.HTTP.CORS.AllowCredentials,

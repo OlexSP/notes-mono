@@ -1,0 +1,14 @@
+info:
+  contact: {}
+paths:
+  /api/heartbeat:
+    get:
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+      summary: Heartbeat metrics
+      tags:
+      - metrics
+swagger: "2.0"
