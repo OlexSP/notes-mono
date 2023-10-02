@@ -35,6 +35,13 @@ type Config struct {
 			Password string `yaml:"password" env:"ADMIN_PWD" env-default:"admin"`
 		} `yaml:"admin"`
 	} `yaml:"app"`
+	PostgreSQL struct {
+		Username string `yaml:"username" env:"PSQL_USERNAME" env-required:"true"`
+		Password string `yaml:"password" env:"PSQL_PASSWORD" env-required:"true"`
+		Host     string `yaml:"host" env:"PSQL_HOST" env-required:"true"`
+		Port     string `yaml:"port" env:"PSQL_PORT" env-required:"true"`
+		Database string `yaml:"database" env:"PSQL_DATABASE" env-required:"true"`
+	} `yaml:"postgresql"`
 }
 
 var instance *Config
