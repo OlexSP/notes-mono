@@ -1,7 +1,7 @@
 package psql
 
 import (
-	"github.com/OlexSP/notes-mono/pkg/common/errors"
+	"github.com/pkg/errors"
 )
 
 func ErrCommit(err error) error {

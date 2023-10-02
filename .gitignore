@@ -4,3 +4,4 @@
 /app/build
 .DS_Store
 .dockerignore
+docker-compose.yml

@@ -14,7 +14,7 @@ func ParsePgError(err error) error {
 			pgErr.Message,
 			pgErr.Detail,
 			pgErr.Where,
-			pgErr.SQLState(),
+			pgErr.Code,
 		)
 	}
 

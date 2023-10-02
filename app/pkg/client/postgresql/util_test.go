@@ -20,21 +20,24 @@ func TestParsePgError(t *testing.T) {
 		Message: "Test error message",
 		Detail:  "Test error detail",
 		Where:   "Test error location",
+		Code:    "Test error sqlstate",
 	}
+	t.Log("log testing")
 
 	err = pgErr
 	result = ParsePgError(err)
-	expected := "database error. message:Test error message, detail:Test error detail, where:Test error location, sqlstate:"
+	expected := "database error. message:Test error message, detail:Test error detail, where:Test error location, sqlstate:Test error sqlstate"
 	if result.Error() != expected {
 		t.Errorf("Expected error: %s, but got: %s", expected, result.Error())
 	}
 }
 
-func BenchmarkParsePgError(b *testing.B) {
+/*func BenchmarkParsePgError(b *testing.B) {
 	err := &pgconn.PgError{
 		Message: "Test error message",
 		Detail:  "Test error detail",
 		Where:   "Test error location",
+		Code:    "Test error sqlstate",
 	}
 
 	b.ResetTimer()
@@ -42,12 +45,13 @@ func BenchmarkParsePgError(b *testing.B) {
 		ParsePgError(err)
 	}
 }
-
+*/
 /*func BenchmarkParsePgErrorOld(b *testing.B) {
 	err := &pgconn.PgError{
 		Message: "Test error message",
 		Detail:  "Test error detail",
 		Where:   "Test error location",
+		Code:    "Test error sqlstate",
 	}
 
 	b.ResetTimer()
