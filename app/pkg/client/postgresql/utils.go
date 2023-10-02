@@ -1,7 +1,6 @@
 package psql
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -9,10 +8,7 @@ import (
 )
 
 func ParsePgError(err error) error {
-	var pgErr *pgconn.PgError
-	if errors.As(err, &pgErr) {
-		pgErr = err.(*pgconn.PgError)
-
+	if pgErr, ok := err.(*pgconn.PgError); ok {
 		return fmt.Errorf(
 			"database error. message:%s, detail:%s, where:%s, sqlstate:%s",
 			pgErr.Message,
